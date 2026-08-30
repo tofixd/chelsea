@@ -1,20 +1,26 @@
-/* Custom Fonts & Variables */
 @font-face {
-    font-family: "Youtube Sans";
-    src: url("YouTubeSansRegular.otf") format("truetype");
-    font-weight: normal;
+    font-family: "YouTube Sans";
+    src: url("YouTubeSansRegular.otf") format("opentype");
+    font-weight: 400;
     font-style: normal;
 }
 
 :root {
-    --primary-blue: #001489; /* Authentic Chelsea Blue */
-    --accent-blue: #0284c7;
-    --discord-blurple: #5865f2;
-    --discord-hover: #4752c4;
-    --text-dark: #0f172a;
-    --text-muted: #475569;
-    --bg-gradient: linear-gradient(135deg, #c7d2fe 0%, #86efac 100%);
-    --card-bg: rgba(255, 255, 255, 0.90);
+    --blue: #001489;
+    --blue-light: #1234ff;
+    --blue-dark: #000b52;
+
+    --discord: #5865f2;
+
+    --text: #f8fafc;
+    --text-soft: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    --glass: rgba(255, 255, 255, 0.075);
+    --glass-hover: rgba(255, 255, 255, 0.11);
+    --border: rgba(255, 255, 255, 0.13);
+
+    --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
 }
 
 * {
@@ -23,139 +29,535 @@
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    font-family: "Youtube Sans", "Segoe UI", sans-serif;
-    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-    color: var(--text-dark);
-    padding: 2rem 1rem;
+
+    padding: 40px 20px;
+
+    font-family: "YouTube Sans", "Segoe UI", sans-serif;
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(0, 20, 137, 0.65),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(88, 101, 242, 0.35),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #020617 0%,
+            #07133f 45%,
+            #020617 100%
+        );
+
+    overflow-x: hidden;
 }
 
-/* Main Container Card */
+/* ambient background glow */
+
+body::before {
+    content: "";
+    position: fixed;
+
+    width: 500px;
+    height: 500px;
+
+    top: -220px;
+    right: -180px;
+
+    background: rgba(0, 20, 137, 0.35);
+    filter: blur(100px);
+
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+
+    width: 400px;
+    height: 400px;
+
+    bottom: -200px;
+    left: -150px;
+
+    background: rgba(88, 101, 242, 0.25);
+    filter: blur(100px);
+
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* main card */
+
 .card {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border-radius: 28px;
-    padding: 3rem 2.5rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 1;
+
+    width: min(700px, 100%);
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 650px;
-    width: 100%;
-    text-align: center;
-    gap: 2rem; /* Spacing out each major block */
+
+    gap: 28px;
+
+    padding: 48px 42px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.105),
+            rgba(255, 255, 255, 0.035)
+        );
+
+    border: 1px solid var(--border);
+    border-radius: 30px;
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    box-shadow:
+        var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+    overflow: hidden;
+
+    animation: cardEnter 0.7s ease-out;
 }
 
-/* Header Elements */
+/* subtle shine */
+
+.card::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent 25%,
+            rgba(255, 255, 255, 0.045) 50%,
+            transparent 75%
+        );
+
+    pointer-events: none;
+}
+
+/* top glow */
+
+.card::after {
+    content: "";
+
+    position: absolute;
+
+    top: -120px;
+    left: 50%;
+
+    width: 350px;
+    height: 180px;
+
+    transform: translateX(-50%);
+
+    background: rgba(0, 20, 137, 0.35);
+    filter: blur(70px);
+
+    pointer-events: none;
+}
+
+/* header */
+
+.header {
+    position: relative;
+    z-index: 2;
+
+    text-align: center;
+}
+
 .header h1 {
-    font-size: 2.5rem;
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
     font-weight: 800;
-    color: var(--primary-blue);
-    letter-spacing: -0.02em;
-    margin-bottom: 0.5rem;
+
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+
+    margin-bottom: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #dbeafe 40%,
+            #7c9cff 100%
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+    text-shadow: 0 10px 35px rgba(0, 20, 137, 0.25);
 }
 
 .subtitle {
-    font-size: 1.15rem;
     color: var(--text-muted);
-    font-weight: 600;
+
+    font-size: 1.05rem;
+    font-weight: 500;
+
+    letter-spacing: 0.01em;
 }
 
-/* Profile Pictures Setup */
+/* managers */
+
 .managers-container {
+    position: relative;
+    z-index: 2;
+
     display: flex;
-    gap: 2rem;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    margin: 1rem 0;
+
+    gap: 30px;
+
+    width: 100%;
+
+    margin: 4px 0 8px;
 }
 
 .manager-card {
+    position: relative;
+
+    padding: 5px;
+
     border-radius: 50%;
-    padding: 6px;
-    background: #ffffff;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #7c9cff,
+            var(--blue)
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 15px 35px rgba(0, 0, 0, 0.35),
+        0 0 30px rgba(0, 20, 137, 0.25);
+
+    transition:
+        transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+        box-shadow 0.35s ease;
+}
+
+.manager-card::before {
+    content: "";
+
+    position: absolute;
+    inset: -6px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    opacity: 0;
+    transform: scale(0.9);
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease;
 }
 
 .manager-card:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-10px) scale(1.05);
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.45),
+        0 0 45px rgba(18, 52, 255, 0.4);
 }
 
-.manager-card img, 
+.manager-card:hover::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.manager-card img,
 img {
-    width: 140px;
-    height: 140px;
-    object-fit: cover;
-    border-radius: 50%;
+    width: 145px;
+    height: 145px;
+
     display: block;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 3px solid #07133f;
+
+    background: #020617;
 }
 
-/* Paragraph Content & Discord Card */
+/* about */
+
 .about-content {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    width: 100%;
+
+    gap: 18px;
 }
 
 .about-content p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: var(--text-dark);
+    padding: 20px 22px;
+
+    font-size: 1.05rem;
+    line-height: 1.75;
+
+    color: var(--text-soft);
+
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.045);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-/* Formats raw links nicely */
 .about-content a {
-    display: inline-block;
-    color: var(--discord-blurple);
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 52px;
+
+    padding: 12px 20px;
+
+    color: #dbe4ff;
+
+    background: rgba(88, 101, 242, 0.09);
+
+    border: 1px solid rgba(88, 101, 242, 0.22);
+    border-radius: 15px;
+
+    font-size: 0.98rem;
     font-weight: 700;
+
     text-decoration: none;
     word-break: break-all;
-    padding: 0.75rem 1.25rem;
-    background-color: rgba(88, 101, 242, 0.1);
-    border-radius: 12px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 .about-content a:hover {
-    background-color: var(--discord-blurple);
-    color: #ffffff;
-    transform: translateY(-2px);
-}
+    background: rgba(88, 101, 242, 0.18);
 
-/* General Button Styles */
-.actions {
-    margin-top: 0.5rem;
-}
+    border-color: rgba(120, 132, 255, 0.45);
 
-.btn, a.btn {
-    display: inline-block;
-    font-family: inherit;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #ffffff;
-    background-color: var(--primary-blue);
-    border: none;
-    padding: 0.85rem 2.25rem;
-    border-radius: 50px;
-    cursor: pointer;
-    text-decoration: none;
-    box-shadow: 0 4px 14px rgba(0, 20, 137, 0.3);
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.btn:hover, a.btn:hover {
-    background-color: #000e66;
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 20, 137, 0.4);
+
+    box-shadow:
+        0 10px 30px rgba(88, 101, 242, 0.18);
 }
 
-.btn:active, a.btn:active {
-    transform: translateY(0);
+/* buttons */
+
+.actions {
+    position: relative;
+    z-index: 2;
+
+    margin-top: 2px;
+}
+
+.btn,
+a.btn {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 190px;
+
+    padding: 14px 30px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1234ff 0%,
+            #001489 100%
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 14px;
+
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 30px rgba(0, 20, 137, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+/* button shine */
+
+.btn::before,
+a.btn::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 80%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition: left 0.55s ease;
+}
+
+.btn:hover::before,
+a.btn:hover::before {
+    left: 140%;
+}
+
+.btn:hover,
+a.btn:hover {
+    transform: translateY(-4px);
+
+    filter: brightness(1.1);
+
+    box-shadow:
+        0 16px 40px rgba(0, 20, 137, 0.5),
+        0 0 25px rgba(18, 52, 255, 0.2);
+}
+
+.btn:active,
+a.btn:active {
+    transform: translateY(-1px);
+}
+
+/* focus accessibility */
+
+.btn:focus-visible,
+a.btn:focus-visible,
+.about-content a:focus-visible {
+    outline: 3px solid rgba(124, 156, 255, 0.7);
+    outline-offset: 4px;
+}
+
+/* animations */
+
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* mobile */
+
+@media (max-width: 600px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    .card {
+        padding: 35px 20px;
+        border-radius: 24px;
+        gap: 24px;
+    }
+
+    .header h1 {
+        font-size: 2.25rem;
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
+    }
+
+    .managers-container {
+        gap: 18px;
+    }
+
+    .manager-card img,
+    img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .about-content p {
+        padding: 17px;
+        font-size: 0.98rem;
+    }
+
+    .btn,
+    a.btn {
+        width: 100%;
+    }
+}
+
+/* reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
 }
